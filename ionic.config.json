@@ -1,0 +1,7 @@
+{
+  "name": "scrape-latest",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

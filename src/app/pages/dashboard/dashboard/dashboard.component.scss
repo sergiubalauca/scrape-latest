@@ -1,0 +1,46 @@
+:host {
+    ion-header {
+        ion-toolbar {
+            .menu {
+                display: flex;
+            }
+        }
+    }
+
+    ion-content {
+        ion-avatar {
+            --border-radius: 35%;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 5.5rem !important; //any size
+            max-height: 5.5rem !important; //any size
+        }
+
+        div {
+            &.figma {
+                position: absolute;
+                width: 375px;
+                height: 812px;
+
+                background: conic-gradient(from 180deg at 50% 50%, #000000 0deg, rgba(198, 227, 228, 0) 360deg);
+            }
+        }
+
+        div {
+            &.myButton {
+                background-color: #466c8a;
+                --background: var(--ion-color-primary);
+            }
+        }
+
+        ion-list {
+            ion-toolbar {
+                position: -webkit-sticky; /* Safari */
+                position: sticky;
+                top: 0;
+
+                border: 1px solid var(--ion-color-primary);
+            }
+        }
+    }
+}

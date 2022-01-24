@@ -1,0 +1,18 @@
+<div *ngIf="isOffline" class="network-status-bar">
+  {{ Offline }}
+</div>
+
+<ion-app [ngClass]="[isOffline ? 'offline' : '']">
+  <ion-menu side="start" content-id="menuContent">
+    <ion-content>
+      <ion-list>
+        <ion-item>Menu Item 1</ion-item>
+        <ion-item>Menu Item 2</ion-item>
+        <ion-item>Menu Item 3</ion-item>
+        <ion-item>Menu Item 4</ion-item>
+        <ion-item>Menu Item 5</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="menuContent"></ion-router-outlet>
+</ion-app>

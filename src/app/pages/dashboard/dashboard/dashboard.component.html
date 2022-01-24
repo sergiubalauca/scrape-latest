@@ -1,0 +1,158 @@
+<!--font-size: rem
+width: % in combination with a max-width, ch
+height: question urself "do i rly need to set height" if yes -> use a min-height
+padding/margin: rem or em, kevin often uses em for padding of buttons
+media queries: em
+
+px only for little things like shadows, borders etc.-->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="menu">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
+      <ion-title>Dashboard</ion-title>
+
+      <ion-item>
+        <ion-select [value]="displayCountry" okText="Switch" cancelText="Cancel" (ionChange)="triggerMe($event)">
+          <ion-select-option *ngFor="let country of countries" [value]="country">
+            {{country.value}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label>Theme</ion-label>
+      <ion-item>
+        <ion-toggle checked="{{initialDarkTheme}}" (ionChange)="toggleTheme($event)"></ion-toggle>
+      </ion-item>
+
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher 
+    slot="fixed"
+    (ionRefresh)="doRefresh($event)"
+    pullFactor="0.5" 
+    pullMin="100" 
+    pullMax="200">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <ion-list>   -->
+  <!-- Sliding item with text options on both sides -->
+  <ion-toolbar class="sticky">
+    <ion-title size="large">#Today</ion-title>
+  </ion-toolbar>
+  <ion-card *ngFor="let dailyTrend of DailyTrends; let i=index;">
+    <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option (click)="favorite(item)">Favorite</ion-item-option>
+        <ion-item-option color="danger" (click)="share(item)">Share</ion-item-option>
+      </ion-item-options>
+
+      <ion-item>
+        <ion-avatar slot="start">
+          <img *ngIf="dailyTrend.image" [src]="dailyTrend.image.imageUrl">
+        </ion-avatar>
+        <ion-label text-capitalize>
+          {{dailyTrend.title.query}}
+          <!---- {{dailyTrend.docID}} --- {{dailyTrend.date}} -->
+        </ion-label>
+        <ion-text>{{dailyTrend.formattedTraffic}}K+</ion-text>
+      </ion-item>
+
+
+      <ion-item-options>
+        <ion-item-option color="primary" (click)="renderExtraInfo(dailyTrend.docID, 0)">
+          <ion-icon slot="end" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+          More
+        </ion-item-option>
+        <ion-item-option color="secondary">
+          <ion-icon slot="end" name="archive"></ion-icon>
+          Archive
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-card>
+  <!-- </ion-list> -->
+  <div>
+    <ion-button class="myButton" *ngIf="!yesterdayLoaded" (click)="loadMore()">Load yesterday</ion-button>
+  </div>
+  <!-- <ion-list *ngIf="yesterdayLoaded"> -->
+  <!-- Sliding item with text options on both sides -->
+  <ion-toolbar *ngIf="yesterdayLoaded" class="sticky">
+    <ion-title size="large">#Older</ion-title>
+  </ion-toolbar>
+  <ion-card *ngFor="let dailyTrend of DailyTrendsMore; let i=index;">
+    <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option (click)="favorite(item)">Favorite</ion-item-option>
+        <ion-item-option color="danger" (click)="share(item)">Share</ion-item-option>
+      </ion-item-options>
+
+      <ion-item>
+        <ion-avatar slot="start">
+          <img *ngIf="dailyTrend.image" [src]="dailyTrend.image.imageUrl">
+        </ion-avatar>
+        <ion-label>
+          {{dailyTrend.title.query}}
+        </ion-label>
+        <ion-text>{{dailyTrend.formattedTraffic}}K+</ion-text>
+      </ion-item>
+
+
+      <ion-item-options>
+        <ion-item-option color="primary" (click)="renderExtraInfo(dailyTrend.docID, dailyTrend.date)">
+          <ion-icon slot="end" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+          More
+        </ion-item-option>
+        <ion-item-option color="secondary">
+          <ion-icon slot="end" name="archive"></ion-icon>
+          Archive
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-card>
+  <!-- </ion-list> -->
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescend" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+
+  </ion-infinite-scroll>
+  <!-- <div class="figma">
+ 
+  </div> -->
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="share"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="start">
+      <ion-fab-button>
+        <ion-icon name="logo-instagram"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="end">
+      <ion-fab-button>
+        <ion-icon name="logo-twitter"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-toolbar>
+    <ion-title>Footer</ion-title>
+  </ion-toolbar>
+</ion-footer> -->
